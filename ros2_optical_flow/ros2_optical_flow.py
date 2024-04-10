@@ -56,7 +56,7 @@ class OpticalFlowPublisher(Node):
                 ('spi_nr', 0),
                 ('spi_slot', 'front'),
                 ('rotation', 0),
-                ('publish_tf', False),
+                ('publish_tf', True),
             ]
         )
         
@@ -77,7 +77,7 @@ class OpticalFlowPublisher(Node):
             sensor_data = read_serial.split()
 
             #delta_x_int, delta_y_int = self.new_method(sensor_data)
-            pos_x, pos_y, v_x, v_y = self.new_method(sensor_data)
+            pos_x, pos_y, v_x, v_y, angle, angledot = self.new_method(sensor_data)
 
             # dx = delta_x_int
             # dy = delta_y_int   
@@ -110,11 +110,11 @@ class OpticalFlowPublisher(Node):
                 ),
                 child_frame_id = self.get_parameter('child_frame').value,
                 pose = PoseWithCovariance(
-                    pose = Pose(position = Point(x=self._pos_x, y=self._pos_y, z=self._pos_z))
+                    pose = Pose(position = Point(x=self._pos_x, y=self._pos_y, z=self._pos_z), orientation = Quaternion(x = 0.0, y = 0.0, z = angle, w = 0.0))
                 ),
                 twist = TwistWithCovariance(
                     #twist = Twist(linear = Vector3(x=dist_x/self._dt, y=dist_y/self._dt, z=0.0))
-                    twist = Twist(linear = Vector3(x=v_x, y=v_y, z=0.0))
+                    twist = Twist(linear = Vector3(x=v_x, y=v_y, z=0.0), angular = Vector3(x = 0.0, y = 0.0, z = angledot))
                 ),
             )
             self._odom_pub.publish(odom_msg)
@@ -151,11 +151,13 @@ class OpticalFlowPublisher(Node):
         #       delta_y_int = 0
         # return delta_x_int,delta_y_int
     
-        if len(sensor_data) > 3:	
+        if len(sensor_data) > 5:	
             pos_x_st = sensor_data[0].decode()
             pos_y_st = sensor_data[1].decode()
             v_x_st = sensor_data[2].decode()
             v_y_st =sensor_data[3].decode()
+            angle_st =sensor_data[4].decode()
+            angle_dot_st =sensor_data[5].decode()
 
             if (len(pos_x_st) == 4):
                 pos_x = float(pos_x_st)
@@ -184,13 +186,29 @@ class OpticalFlowPublisher(Node):
                 v_y = float(v_y_st)
             else:
                 v_y = 0.0
+
+            if (len(angle_st) == 4):
+                 angle = float(angle_st)
+            elif ([1:].isnumeric(angle_st) == 1):
+                 angle = float(angle_st)
+            else:
+                 angle = 0.0
+
+            if (len(angledot_st) == 4):
+                 angledot = float(angledot_st)
+            elif ([1:].isnumeric() == 1):
+                 angledot = float(angledot_st)
+            else:
+                 angledot = 0.0
             
         else:
               pos_x = self._pos_x
               pos_y = self._pos_y
               v_x = 0.0
               v_y = 0.0
-        return pos_x, pos_y, v_x, v_y
+              angle = 0.0
+              angledot = 0.0
+        return pos_x, pos_y, v_x, v_y, angle, angledot
     
 
 
