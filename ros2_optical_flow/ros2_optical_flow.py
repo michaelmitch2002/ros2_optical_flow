@@ -189,14 +189,14 @@ class OpticalFlowPublisher(Node):
 
             if (len(angle_st) == 4):
                  angle = float(angle_st)
-            elif ([1:].isnumeric(angle_st) == 1):
+            elif (angle_st[1:].isnumeric(angle_st) == 1):
                  angle = float(angle_st)
             else:
                  angle = 0.0
 
             if (len(angledot_st) == 4):
                  angledot = float(angledot_st)
-            elif ([1:].isnumeric() == 1):
+            elif (angledot_st[1:].isnumeric() == 1):
                  angledot = float(angledot_st)
             else:
                  angledot = 0.0
