@@ -157,7 +157,7 @@ class OpticalFlowPublisher(Node):
             v_x_st = sensor_data[2].decode()
             v_y_st =sensor_data[3].decode()
             angle_st =sensor_data[4].decode()
-            angle_dot_st =sensor_data[5].decode()
+            angledot_st =sensor_data[5].decode()
 
             if (len(pos_x_st) == 4):
                 pos_x = float(pos_x_st)
