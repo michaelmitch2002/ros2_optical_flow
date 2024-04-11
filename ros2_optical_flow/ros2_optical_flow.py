@@ -76,7 +76,7 @@ class OpticalFlowPublisher(Node):
 
         
     def publish_odom(self): 
-        ser = serial.Serial('/dev/ttyACM1',9600,timeout = 1000)
+        ser = serial.Serial('/dev/ttyACM2',9600,timeout = 1000)
         #ser.reset_input_buffer()
         while True: 
             read_serial=ser.readline()
