@@ -29,7 +29,7 @@ from rclpy.node import Node
 from example_interfaces.msg import Int64
 from geometry_msgs.msg import TransformStamped
 from tf2_msgs.msg import TFMessage
-from tf.transformations import quaternion_from_euler
+from tf_transformations import quaternion_from_euler
 
 # hard-coded values for PAA5100 and PMW3901 (to be verified for PMW3901)
 FOV_DEG = 42.0
