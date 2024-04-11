@@ -106,8 +106,8 @@ class OpticalFlowPublisher(Node):
 
             self._pos_x = pos_x
             self._pos_y = pos_y
-            q = quaternion_from_euler(0, 0, angle)
-
+            q = quaternion_from_euler(0, 0, angle)    
+            print(q)
             odom_msg = Odometry(
                 header = Header(
                     stamp = self.get_clock().now().to_msg(),
