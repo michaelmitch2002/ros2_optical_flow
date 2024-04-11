@@ -38,7 +38,7 @@ class OpticalFlowPublisher(Node):
     def __init__(self, node_name='optical_flow_ros'):
         super().__init__(node_name)
         self._odom_pub = self.create_publisher(Odometry, "example/odom", 10) # type: ignore
-        #self._tf_broadcaster = TransformBroadcaster(self) #Optional[TransformBroadcaster] = None
+        self._tf_broadcaster = TransformBroadcaster(self) #Optional[TransformBroadcaster] = None
         self._timer = self.create_timer(0.1, self.publish_odom) # type: ignore
         #self.publish_odom
 
@@ -58,13 +58,14 @@ class OpticalFlowPublisher(Node):
                 ('spi_nr', 0),
                 ('spi_slot', 'front'),
                 ('rotation', 0),
-                ('publish_tf', False),
+                ('publish_tf', True),
             ]
         )
         
         self._pos_x = self.get_parameter('x_init').value
         self._pos_y = self.get_parameter('y_init').value
         self._pos_z = self.get_parameter('z_height').value
+        self._angle = 0.0
         self._scaler = self.get_parameter('scaler').value
         self._dt = self.get_parameter('timer_period').value
         self._sensor = None
@@ -104,6 +105,7 @@ class OpticalFlowPublisher(Node):
 
             self._pos_x = pos_x
             self._pos_y = pos_y
+            self._angle = angle
 
             odom_msg = Odometry(
                 header = Header(
@@ -112,7 +114,7 @@ class OpticalFlowPublisher(Node):
                 ),
                 child_frame_id = self.get_parameter('child_frame').value,
                 pose = PoseWithCovariance(
-                    pose = Pose(position = Point(x=self._pos_x, y=self._pos_y, z=self._pos_z), orientation = Quaternion(x = 0.0, y = 0.0, z = angle, w = 1.0))
+                    pose = Pose(position = Point(x=self._pos_x, y=self._pos_y, z=self._pos_z), orientation = Quaternion(x = 0.0, y = 0.0, z = self._angle, w = .0))
                 ),
                 twist = TwistWithCovariance(
                     #twist = Twist(linear = Vector3(x=dist_x/self._dt, y=dist_y/self._dt, z=0.0))
@@ -195,7 +197,7 @@ class OpticalFlowPublisher(Node):
             elif (angle_st[1:].isnumeric() == 1):
                  angle = float(angle_st)
             else:
-                 angle = 0.0
+                 angle = self._angle
 
             if (len(angledot_st) == 4):
                  angledot = float(angledot_st)
@@ -209,7 +211,7 @@ class OpticalFlowPublisher(Node):
               pos_y = self._pos_y
               v_x = 0.0
               v_y = 0.0
-              angle = 0.0
+              angle = self._angle
               angledot = 0.0
         return pos_x, pos_y, v_x, v_y, angle, angledot
     
