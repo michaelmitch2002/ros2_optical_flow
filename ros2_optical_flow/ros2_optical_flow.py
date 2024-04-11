@@ -66,7 +66,7 @@ class OpticalFlowPublisher(Node):
         self._pos_x = self.get_parameter('x_init').value
         self._pos_y = self.get_parameter('y_init').value
         self._pos_z = self.get_parameter('z_height').value
-        self._angle = 0.0
+        #self._angle = 0.0
         self._scaler = self.get_parameter('scaler').value
         self._dt = self.get_parameter('timer_period').value
         self._sensor = None
@@ -106,8 +106,7 @@ class OpticalFlowPublisher(Node):
 
             self._pos_x = pos_x
             self._pos_y = pos_y
-            self._angle = angle
-            q = quaternion_from_euler(0, 0, self._angle)
+            q = quaternion_from_euler(0, 0, angle)
 
             odom_msg = Odometry(
                 header = Header(
@@ -199,7 +198,7 @@ class OpticalFlowPublisher(Node):
             elif (angle_st[1:].isnumeric() == 1):
                  angle = float(angle_st)
             else:
-                 angle = self._angle
+                 angle = 0.0
 
             if (len(angledot_st) == 4):
                  angledot = float(angledot_st)
@@ -213,7 +212,7 @@ class OpticalFlowPublisher(Node):
               pos_y = self._pos_y
               v_x = 0.0
               v_y = 0.0
-              angle = self._angle
+              angle = 0.0
               angledot = 0.0
         return pos_x, pos_y, v_x, v_y, angle, angledot
     
