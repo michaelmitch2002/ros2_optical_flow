@@ -39,11 +39,10 @@ RES_PIX = 35
 class OpticalFlowPublisher(Node):
     def __init__(self, node_name='optical_flow_ros'):
         super().__init__(node_name)
-        self._pose_data = 0
+        #self._pose_data = 0
         self._odom_pub = self.create_publisher(Odometry, "example/odom", 10) # type: ignore
         self._tf_broadcaster = TransformBroadcaster(self) #Optional[TransformBroadcaster] = None
         self._timer = self.create_timer(0.1, self.publish_odom) # type: ignore
-        #self.publish_odom
 
         # declare parameters and default values
         self.declare_parameters(
@@ -68,16 +67,15 @@ class OpticalFlowPublisher(Node):
         self._pos_x = self.get_parameter('x_init').value
         self._pos_y = self.get_parameter('y_init').value
         self._pos_z = self.get_parameter('z_height').value
-        #self._angle = 0.0
         self._scaler = self.get_parameter('scaler').value
         self._dt = self.get_parameter('timer_period').value
         self._sensor = None
-        self.x_mes = 0.0
-        self.y_mes = 0.0
-        self.yaw_mes = 0.0
-        self.vx_mes = 0.0
-        self.vy_mes = 0.0
-        self.vyaw_mes = 0.0
+        #self.x_mes = 0.0
+        #self.y_mes = 0.0
+        #self.yaw_mes = 0.0
+        #self.vx_mes = 0.0
+        #self.vy_mes = 0.0
+        #self.vyaw_mes = 0.0
         self.subscription = self.create_subscription(
             Float64MultiArray,
             '/map_to_base_link_pose2d',
@@ -88,13 +86,16 @@ class OpticalFlowPublisher(Node):
         self.get_logger().info('Initialized')
         
     def listener_callback(self, msg):
-        self.x_mes = msg.float64[0]
-        self.y_mes = msg.float64[1]
-        self.yaw_mes = msg.float64[2]
-        self.vx_mes = msg.float64[3]
-        self.vy_mes = msg.float64[4]
-        self.vyaw_mes = msg.float64[5]
-        print(str(self.x_mes))
+        # x_mes = msg.float64[0]
+        # y_mes = msg.float64[1]
+        # yaw_mes = msg.float64[2]
+        # vx_mes = msg.float64[3]
+        # vy_mes = msg.float64[4]
+        # vyaw_mes = msg.float64[5]
+        pose_data = msg.data
+        print(str(pose_data))
+        #return x_mes, y_mes, yaw_mes, vx_mx, vy_mes, vyaw_mes
+        
         
         
     def publish_odom(self): 
@@ -163,26 +164,6 @@ class OpticalFlowPublisher(Node):
 
     def new_method(self, sensor_data):
         
-        # if len(sensor_data) > 1:	
-        #     delta_x = sensor_data[0].decode()
-        #     delta_y = sensor_data[1].decode()
-        #     if (len(delta_x) == 1):
-        #         delta_x_int = int(delta_x)
-        #     elif (delta_x[1:].isnumeric() == 1):
-        #         delta_x_int = int(delta_x)
-        #     else:
-        #         delta_x_int = 0
-        #     if (len(delta_x) == 1):
-        #         delta_y_int = int(delta_y)
-        #     elif (delta_x[1:].isnumeric() == 1):
-        #         delta_y_int = int(delta_y)
-        #     else:
-        #         delta_y_int = 0	
-        # else:
-        #       delta_x_int = 0
-        #       delta_y_int = 0
-        # return delta_x_int,delta_y_int
-    
         if len(sensor_data) > 5:	
             pos_x_st = sensor_data[0].decode()
             pos_y_st = sensor_data[1].decode()
@@ -190,7 +171,6 @@ class OpticalFlowPublisher(Node):
             v_y_st =sensor_data[3].decode()
             angle_st =sensor_data[4].decode()
             angledot_st =sensor_data[5].decode()
-            #print(angle_st)
             if (len(pos_x_st) == 4):
                 pos_x = float(pos_x_st)
             elif (pos_x_st[4:].isnumeric() == 1):
@@ -234,7 +214,6 @@ class OpticalFlowPublisher(Node):
               v_y = 0.0
               angle = 0.0
               angledot = 0.0
-        #print(angle)
         return pos_x, pos_y, v_x, v_y, angle, angledot
     
 
