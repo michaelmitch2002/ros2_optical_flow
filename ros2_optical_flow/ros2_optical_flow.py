@@ -39,12 +39,12 @@ RES_PIX = 35
 class OpticalFlowPublisher(Node):
     def __init__(self, node_name='optical_flow_ros'):
         super().__init__(node_name)
+        self._pose_data = 0
         self.subscription = self.create_subscription(
             Float64MultiArray,
             'map_to_base_link_pose2d',
             self.listener_callback,
             10)
-        self._pose_data = 0
         self.subscription  # prevent unused variable warning
         self._odom_pub = self.create_publisher(Odometry, "example/odom", 10) # type: ignore
         self._tf_broadcaster = TransformBroadcaster(self) #Optional[TransformBroadcaster] = None
