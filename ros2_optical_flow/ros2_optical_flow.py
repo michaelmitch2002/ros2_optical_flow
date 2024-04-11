@@ -80,7 +80,7 @@ class OpticalFlowPublisher(Node):
         self.vyaw_mes = 0.0
         self.subscription = self.create_subscription(
             Float64MultiArray,
-            'map_to_base_link_pose2d',
+            '/map_to_base_link_pose2d',
             self.listener_callback,
             10)
         self.subscription  # prevent unused variable warning
