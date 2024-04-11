@@ -79,7 +79,23 @@ class OpticalFlowPublisher(Node):
         self._sensor = None
         
         self.get_logger().info('Initialized')   
-        
+
+    def listener_callback(self, msg):
+        # x_mes = msg.float64[0]
+        # y_mes = msg.float64[1]
+        # yaw_mes = msg.float64[2]
+        # vx_mes = msg.float64[3]
+        # vy_mes = msg.float64[4]
+        # vyaw_mes = msg.float64[5]
+
+        #ser = serial.Serial('/dev/ttyACM0',9600, timeout=1)
+        #ser.reset_input_buffer()
+        self.get_logger().info('Hi')
+        pose_data = msg.data
+
+        #serial.write(str(pose_data) + "/r/n")
+        #print(str(pose_data))
+        #return x_mes, y_mes, yaw_mes, vx_mx, vy_mes, vyaw_mes
         
     def publish_odom(self): 
         ser = serial.Serial('/dev/ttyACM0',9600, timeout=1)
@@ -198,22 +214,6 @@ class OpticalFlowPublisher(Node):
               angledot = 0.0
         return pos_x, pos_y, v_x, v_y, angle, angledot
     
-    def listener_callback(self, msg):
-        # x_mes = msg.float64[0]
-        # y_mes = msg.float64[1]
-        # yaw_mes = msg.float64[2]
-        # vx_mes = msg.float64[3]
-        # vy_mes = msg.float64[4]
-        # vyaw_mes = msg.float64[5]
-
-        ser = serial.Serial('/dev/ttyACM0',9600, timeout=1)
-        ser.reset_input_buffer()
-        self.get_logger().info('Hi')
-        pose_data = msg.data
-
-        serial.write(str(pose_data) + "/r/n")
-        print(str(pose_data))
-        #return x_mes, y_mes, yaw_mes, vx_mx, vy_mes, vyaw_mes
 
 def main(args=None):
         rclpy.init(args=args)
