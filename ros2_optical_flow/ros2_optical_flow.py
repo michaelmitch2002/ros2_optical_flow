@@ -38,7 +38,7 @@ class OpticalFlowPublisher(Node):
     def __init__(self, node_name='optical_flow_ros'):
         super().__init__(node_name)
         self._odom_pub = self.create_publisher(Odometry, "example/odom", 10) # type: ignore
-        self._tf_broadcaster = TransformBroadcaster(self) #Optional[TransformBroadcaster] = None
+        #self._tf_broadcaster = TransformBroadcaster(self) #Optional[TransformBroadcaster] = None
         self._timer = self.create_timer(0.1, self.publish_odom) # type: ignore
         #self.publish_odom
 
