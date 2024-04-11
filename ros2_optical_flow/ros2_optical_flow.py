@@ -167,45 +167,39 @@ class OpticalFlowPublisher(Node):
             print(angle_st)
             if (len(pos_x_st) == 4):
                 pos_x = float(pos_x_st)
-            elif (pos_x_st[1:].isnumeric() == 1):
+            elif (pos_x_st[4:].isnumeric() == 1):
                 pos_x = float(pos_x_st)
             else:
                 pos_x = self._pos_x
 
             if (len(pos_y_st) == 4):
                 pos_y = float(pos_y_st)
-            elif (pos_y_st[1:].isnumeric() == 1):
+            elif (pos_y_st[4:].isnumeric() == 1):
                 pos_y = float(pos_y_st)
             else:
                 pos_y = self._pos_y
 
             if (len(v_x_st) == 4):
                 v_x = float(v_x_st)
-            elif (v_x_st[1:].isnumeric() == 1):
-                v_x = float(v_x_st)
             else:
-                v_x = 0.0
+                v_x = float(v_x_st)
 
             if (len(v_y_st) == 4):
                 v_y = float(v_y_st)
-            elif (v_y_st[1:].isnumeric() == 1):
-                v_y = float(v_y_st)
             else:
-                v_y = 0.0
+                v_y = float(v_y_st)
 
             if (len(angle_st) == 4):
                  angle = float(angle_st)
-            elif (angle_st[1:].isnumeric() == 1):
+            elif (angle_st[3:].isnumeric() == 1):
                  angle = float(angle_st)
             else:
                  angle = 0.0
 
             if (len(angledot_st) == 4):
                  angledot = float(angledot_st)
-            elif (angledot_st[1:].isnumeric() == 1):
-                 angledot = float(angledot_st)
             else:
-                 angledot = 0.0
+                 angledot = float(angledot_st)
             
         else:
               pos_x = self._pos_x
