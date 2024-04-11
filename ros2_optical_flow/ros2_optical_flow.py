@@ -94,6 +94,7 @@ class OpticalFlowPublisher(Node):
         self.vx_mes = msg.float64[3]
         self.vy_mes = msg.float64[4]
         self.vyaw_mes = msg.float64[5]
+        print(str(self.x_mes))
         
         
     def publish_odom(self): 
@@ -157,8 +158,8 @@ class OpticalFlowPublisher(Node):
                                          rotation = Quaternion(x = odom_msg.pose.pose.orientation.x, y = odom_msg.pose.pose.orientation.y, z = odom_msg.pose.pose.orientation.z, w = odom_msg.pose.pose.orientation.w)),
                 )
                 self._tf_broadcaster.sendTransform(tf_msg)
-            self.get_logger().info('I receive: "%s"' %
-                               str(self.x_mes))
+            # self.get_logger().info('I receive: "%s"' %
+            #                    str(self.x_mes))
 
     def new_method(self, sensor_data):
         
