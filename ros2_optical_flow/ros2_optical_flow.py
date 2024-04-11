@@ -30,6 +30,7 @@ from example_interfaces.msg import Int64
 from geometry_msgs.msg import TransformStamped
 from tf2_msgs.msg import TFMessage
 from tf_transformations import quaternion_from_euler
+from std_msgs.msg import Float64MultiArray 
 
 # hard-coded values for PAA5100 and PMW3901 (to be verified for PMW3901)
 FOV_DEG = 42.0
@@ -39,7 +40,7 @@ class OpticalFlowPublisher(Node):
     def __init__(self, node_name='optical_flow_ros'):
         super().__init__(node_name)
         self.subscription = self.create_subscription(
-            String,
+            Float64MultiArray,
             'map_to_base_link_pose2d',
             self.listener_callback,
             10)
