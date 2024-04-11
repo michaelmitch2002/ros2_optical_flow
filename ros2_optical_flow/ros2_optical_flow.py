@@ -38,6 +38,12 @@ RES_PIX = 35
 class OpticalFlowPublisher(Node):
     def __init__(self, node_name='optical_flow_ros'):
         super().__init__(node_name)
+        self.subscription = self.create_subscription(
+            String,
+            'map_to_base_link_pose2d',
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
         self._odom_pub = self.create_publisher(Odometry, "example/odom", 10) # type: ignore
         self._tf_broadcaster = TransformBroadcaster(self) #Optional[TransformBroadcaster] = None
         self._timer = self.create_timer(0.1, self.publish_odom) # type: ignore
@@ -72,7 +78,10 @@ class OpticalFlowPublisher(Node):
         self._sensor = None
         
         self.get_logger().info('Initialized')
-
+        
+    def listener_callback(self, msg):
+        self.get_logger().info('I heard: "%s"' % msg.data)
+        
     def publish_odom(self): 
         ser = serial.Serial('/dev/ttyACM0',9600, timeout=1)
         ser.reset_input_buffer()
@@ -107,7 +116,7 @@ class OpticalFlowPublisher(Node):
             self._pos_x = pos_x
             self._pos_y = pos_y
             q = quaternion_from_euler(0, 0, -angle)    
-            print(q)
+            #print(q)
             odom_msg = Odometry(
                 header = Header(
                     stamp = self.get_clock().now().to_msg(),
@@ -164,7 +173,7 @@ class OpticalFlowPublisher(Node):
             v_y_st =sensor_data[3].decode()
             angle_st =sensor_data[4].decode()
             angledot_st =sensor_data[5].decode()
-            print(angle_st)
+            #print(angle_st)
             if (len(pos_x_st) == 4):
                 pos_x = float(pos_x_st)
             elif (pos_x_st[4:].isnumeric() == 1):
@@ -208,7 +217,7 @@ class OpticalFlowPublisher(Node):
               v_y = 0.0
               angle = 0.0
               angledot = 0.0
-        print(angle)
+        #print(angle)
         return pos_x, pos_y, v_x, v_y, angle, angledot
     
 
