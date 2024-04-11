@@ -78,11 +78,23 @@ class OpticalFlowPublisher(Node):
         self._scaler = self.get_parameter('scaler').value
         self._dt = self.get_parameter('timer_period').value
         self._sensor = None
+        x_mes = 0
+        y_mes = 0
+        yaw_mes = 0
+        vx_mes = 0
+        vy_mes = 0
+        vyaw_mes = 0
         
         self.get_logger().info('Initialized')
         
     def listener_callback(self, msg):
-        self._pose_data = msg
+        x_mes = msg.float64[0]
+        y_mes = msg.float64[1]
+        yaw_mes = msg.float64[2]
+        vx_mes = msg.float64[3]
+        vy_mes = msg.float64[4]
+        vyaw_mes = msg.float64[5]
+        
         
     def publish_odom(self): 
         ser = serial.Serial('/dev/ttyACM0',9600, timeout=1)
@@ -146,7 +158,7 @@ class OpticalFlowPublisher(Node):
                 )
                 self._tf_broadcaster.sendTransform(tf_msg)
             self.get_logger().info('I receive: "%s"' %
-                               str(self._pose_data))
+                               str(x_mes))
 
     def new_method(self, sensor_data):
         
