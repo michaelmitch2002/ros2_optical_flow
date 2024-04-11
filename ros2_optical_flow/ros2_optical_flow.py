@@ -214,6 +214,7 @@ class OpticalFlowPublisher(Node):
               v_y = 0.0
               angle = 0.0
               angledot = 0.0
+        print(angle)
         return pos_x, pos_y, v_x, v_y, angle, angledot
     
 
