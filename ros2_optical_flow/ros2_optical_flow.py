@@ -81,7 +81,7 @@ class OpticalFlowPublisher(Node):
         self.get_logger().info('Initialized')
         
     def listener_callback(self, msg):
-        self.get_logger().info('I heard: "%s"' % msg.data)
+        self.odom_data = msg
         
     def publish_odom(self): 
         ser = serial.Serial('/dev/ttyACM0',9600, timeout=1)
@@ -144,6 +144,8 @@ class OpticalFlowPublisher(Node):
                                          rotation = Quaternion(x = odom_msg.pose.pose.orientation.x, y = odom_msg.pose.pose.orientation.y, z = odom_msg.pose.pose.orientation.z, w = odom_msg.pose.pose.orientation.w)),
                 )
                 self._tf_broadcaster.sendTransform(tf_msg)
+            self.get_logger().info('I receive: "%s"' %
+                               str(self.odom_data))
 
     def new_method(self, sensor_data):
         
