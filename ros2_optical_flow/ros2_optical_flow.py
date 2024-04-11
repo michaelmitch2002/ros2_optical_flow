@@ -146,7 +146,7 @@ class OpticalFlowPublisher(Node):
                 )
                 self._tf_broadcaster.sendTransform(tf_msg)
             self.get_logger().info('I receive: "%s"' %
-                               str(self.odom_data))
+                               str(self._pub_data))
 
     def new_method(self, sensor_data):
         
