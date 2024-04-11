@@ -81,7 +81,7 @@ class OpticalFlowPublisher(Node):
             sensor_data = read_serial.split()
 
             #delta_x_int, delta_y_int = self.new_method(sensor_data)
-            pos_x, pos_y, v_x, v_y, angle, angledot = self.new_method(sensor_data)
+            [pos_x, pos_y, v_x, v_y, angle, angledot] = self.new_method(sensor_data)
 
             # dx = delta_x_int
             # dy = delta_y_int   
