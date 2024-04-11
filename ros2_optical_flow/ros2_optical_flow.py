@@ -29,6 +29,7 @@ from rclpy.node import Node
 from example_interfaces.msg import Int64
 from geometry_msgs.msg import TransformStamped
 from tf2_msgs.msg import TFMessage
+from tf.transformations import quaternion_from_euler
 
 # hard-coded values for PAA5100 and PMW3901 (to be verified for PMW3901)
 FOV_DEG = 42.0
@@ -106,6 +107,7 @@ class OpticalFlowPublisher(Node):
             self._pos_x = pos_x
             self._pos_y = pos_y
             self._angle = angle
+            q = quaternion_from_euler(0, 0, self._angle)
 
             odom_msg = Odometry(
                 header = Header(
@@ -114,7 +116,7 @@ class OpticalFlowPublisher(Node):
                 ),
                 child_frame_id = self.get_parameter('child_frame').value,
                 pose = PoseWithCovariance(
-                    pose = Pose(position = Point(x=self._pos_x, y=self._pos_y, z=self._pos_z), orientation = Quaternion(x = 0.0, y = 0.0, z = self._angle, w = .0))
+                    pose = Pose(position = Point(x=self._pos_x, y=self._pos_y, z=self._pos_z), orientation = Quaternion(x = q[0], y = q[1], z = q[2], w = q[3]))
                 ),
                 twist = TwistWithCovariance(
                     #twist = Twist(linear = Vector3(x=dist_x/self._dt, y=dist_y/self._dt, z=0.0))
@@ -130,7 +132,7 @@ class OpticalFlowPublisher(Node):
                     transform = Transform(translation = Vector3(x=odom_msg.pose.pose.position.x,
                                                                 y=odom_msg.pose.pose.position.y,
                                                                 z=odom_msg.pose.pose.position.z),
-                                         rotation = Quaternion(x = 0.0, y = 0.0, z = odom_msg.pose.pose.orientation.z, w = 1.0)),
+                                         rotation = Quaternion(x = odom_msg.pose.pose.orientation.x, y = odom_msg.pose.pose.orientation.y, z = odom_msg.pose.pose.orientation.z, w = odom_msg.pose.pose.orientation.w)),
                 )
                 self._tf_broadcaster.sendTransform(tf_msg)
 
