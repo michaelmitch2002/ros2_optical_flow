@@ -44,7 +44,7 @@ class OpticalFlowPublisher(Node):
             'map_to_base_link_pose2d',
             self.listener_callback,
             10)
-        self._pose_data
+        self._pose_data = 0
         self.subscription  # prevent unused variable warning
         self._odom_pub = self.create_publisher(Odometry, "example/odom", 10) # type: ignore
         self._tf_broadcaster = TransformBroadcaster(self) #Optional[TransformBroadcaster] = None
