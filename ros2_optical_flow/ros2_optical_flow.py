@@ -42,7 +42,7 @@ class OpticalFlowPublisher(Node):
 
         self.subscription = self.create_subscription(
             Float64MultiArray,
-            '/map_to_base_link_pose2d',
+            'map_to_base_link_pose2d',
             self.listener_callback,
             10)
         self.subscription  # prevent unused variable warning
@@ -143,12 +143,6 @@ class OpticalFlowPublisher(Node):
                 )
                 self._tf_broadcaster.sendTransform(tf_msg)
 
-            self.subscription = self.create_subscription(
-                Float64MultiArray,
-                '/map_to_base_link_pose2d',
-                self.listener_callback,
-                10)
-            self.subscription  # prevent unused variable warning
 
     def new_method(self, sensor_data):
         
