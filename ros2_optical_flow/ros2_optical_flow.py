@@ -44,6 +44,7 @@ class OpticalFlowPublisher(Node):
             'map_to_base_link_pose2d',
             self.listener_callback,
             10)
+        self._pose_data
         self.subscription  # prevent unused variable warning
         self._odom_pub = self.create_publisher(Odometry, "example/odom", 10) # type: ignore
         self._tf_broadcaster = TransformBroadcaster(self) #Optional[TransformBroadcaster] = None
@@ -81,7 +82,7 @@ class OpticalFlowPublisher(Node):
         self.get_logger().info('Initialized')
         
     def listener_callback(self, msg):
-        self.odom_data = msg
+        self._pose_data = msg
         
     def publish_odom(self): 
         ser = serial.Serial('/dev/ttyACM0',9600, timeout=1)
