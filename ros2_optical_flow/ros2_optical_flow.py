@@ -115,7 +115,7 @@ class OpticalFlowPublisher(Node):
             self._pos_x = pos_x
             self._pos_y = pos_y
             q = quaternion_from_euler(0, 0, -angle)    
-            #print(q)
+            
             odom_msg = Odometry(
                 header = Header(
                     stamp = self.get_clock().now().to_msg(),
@@ -142,8 +142,7 @@ class OpticalFlowPublisher(Node):
                                          rotation = Quaternion(x = odom_msg.pose.pose.orientation.x, y = odom_msg.pose.pose.orientation.y, z = odom_msg.pose.pose.orientation.z, w = odom_msg.pose.pose.orientation.w)),
                 )
                 self._tf_broadcaster.sendTransform(tf_msg)
-            # self.get_logger().info('I receive: "%s"' %
-            #                    str(self.x_mes))
+
             self.subscription = self.create_subscription(
                 Float64MultiArray,
                 '/map_to_base_link_pose2d',
